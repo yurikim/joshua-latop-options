@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joshua's Engineering Laptop Options</title>
+    <title>Joshua's Engineering Laptop Selection</title>
     <style>
         /* Modern Minimalist Design System */
         :root {
@@ -16,6 +16,8 @@
             --border: #e2e8f0;
             --pro-color: #16a34a;
             --con-color: #dc2626;
+            --badge-top: #eab308; /* Gold color for top pick */
+            --badge-second: #0ea5e9; /* Light blue color for 2nd best */
         }
 
         body {
@@ -37,6 +39,7 @@
             margin-bottom: 3rem;
             border-bottom: 2px solid var(--border);
             padding-bottom: 1.5rem;
+            text-align: center;
         }
 
         header h1 {
@@ -51,7 +54,7 @@
             margin: 0;
         }
 
-        /* Preamble Section Styling */
+        /* Preamble / Buying Guide Section Styling */
         .preamble {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
@@ -87,7 +90,7 @@
             margin: 0;
         }
 
-        /* Laptop Catalog Grid */
+        /* Laptop Catalog Grid (Fully Mobile Responsive) */
         .catalog-title {
             font-size: 1.75rem;
             margin-bottom: 1.5rem;
@@ -96,14 +99,9 @@
 
         .laptop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            /* Creates a responsive layout: 2 columns on desktop, 1 on mobile */
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 2rem;
-        }
-
-        @media (max-width: 600px) {
-            .laptop-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         /* Individual Card Styling */
@@ -114,27 +112,52 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative; /* Needed for positioning choice labels/badges */
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        /* Style for Custom Selection Badges */
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 6px;
+            color: #ffffff;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge.top-pick {
+            background-color: var(--badge-top);
+            color: #000000; /* Dark text for readability on yellow */
+        }
+        .badge.second-pick {
+            background-color: var(--badge-second);
         }
 
         .laptop-image-container {
             background-color: #f1f5f9;
-            height: 250px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             border-bottom: 1px solid var(--border);
+            padding: 1rem;
         }
 
         .laptop-image-container img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
         }
 
         .laptop-content {
-            padding: 1.75rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -145,11 +168,12 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1rem;
+            gap: 1rem;
         }
 
         .laptop-title-block h3 {
             margin: 0;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             letter-spacing: -0.02em;
         }
 
@@ -161,21 +185,21 @@
         }
 
         .laptop-price {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-main);
             white-space: nowrap;
         }
 
-        /* Tech Specs List */
+        /* Tech Specs Grid Block inside Card */
         .specs-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem 1rem;
+            gap: 0.4rem 0.8rem;
             background-color: #f8fafc;
-            padding: 1rem;
+            padding: 0.85rem;
             border-radius: 8px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             font-size: 0.85rem;
             border: 1px solid var(--border);
         }
@@ -185,11 +209,9 @@
             color: var(--text-muted);
         }
 
-        /* User Pros and Cons Custom Layout */
+        /* Pros and Cons Section Layout */
         .evaluation-block {
-            margin-top: auto;
-            border-top: 1px dashed var(--border);
-            padding-top: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .eval-section {
@@ -197,7 +219,7 @@
         }
 
         .eval-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
             text-transform: uppercase;
@@ -215,7 +237,33 @@
         }
 
         .eval-list li {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
+        }
+
+        /* Action/Link Button Component */
+        .buy-btn {
+            display: block;
+            text-align: center;
+            background-color: var(--accent);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: auto; /* Pushes the button perfectly to the bottom of the card content */
+            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Mobile specific style tweaks for smaller viewports */
+        @media (max-width: 480px) {
+            header h1 { font-size: 2rem; }
+            .specs-list { grid-template-columns: 1fr; }
+            .laptop-header { flex-direction: column; gap: 0.25rem; }
         }
     </style>
 </head>
@@ -228,27 +276,27 @@
             <p>Curated options meeting the official Texas A&M Bring Your Own Device (BYOD) standard.</p>
         </header>
 
-        <!-- PREAMBLE SECTION: Explaining the architectural framework behind the choices -->
+        <!-- PREAMBLE SECTION: Simplified plain-language logic guide -->
         <section class="preamble">
             <h2>The Selection Process & Logic</h2>
-            <p>Every option listed below safely satisfies the foundational parameters required by the university. However, component configurations were strictly filtered to balance multi-year engineering workloads against hardware cost and chassis ergonomics:</p>
+            <p>Choosing a laptop for engineering isn’t like buying a normal school laptop. Engineering software requires serious horsepower. We looked at dozens of options and filtered them down based on four major things:</p>
             
             <div class="grid-guide">
                 <div class="guide-item">
-                    <h3>Processor (CPU)</h3>
-                    <p>Prioritized High-Performance Tier 7 chips (Ultra 7 / Ryzen 7) over Tier 9. Tier 9 chips draw high power, run exceedingly hot, and trigger thermal limits within modern portable frames without providing equivalent practical output for students.</p>
+                    <h3>1. The Brains: Processor (CPU)</h3>
+                    <p>Think of the processor as the laptop's speed limit. We looked for Intel Core Ultra 7 or AMD Ryzen 7 chips as the top preference but also considered Ultra 9 and Ryzen 9 -- it's overkill and can make the computer run hot but it was the best / only option sometimes.</p>
                 </div>
                 <div class="guide-item">
-                    <h3>Graphics (GPU)</h3>
-                    <p>Filtered down to dedicated consumer discrete units (RTX 5060/5070) with 8GB VRAM to protect performance margins for senior-year rendering pipelines. "Enterprise" workstation equivalents (RTX 1000) carry heavy premiums for driver software validations that do not yield physical processing advantages for undergraduate student coursework.</p>
+                    <h3>2. The Muscle: Graphics Card (GPU)</h3>
+                    <p>When you are spinning a 3D model of a car engine or a bridge, the graphics card does all the heavy lifting. <strong>RTX 5060 / 5070</strong> are "gaming" cards but are perfect for students because they offer massive raw power for a reasonable price. The <strong>RTX 1000</strong> is a "workstation" card built for corporate offices. It isn't faster, but software companies (e.g. AutoCAD) guarantee it won't glitch—though you pay a high premium for that name. I looked into this quite a bit and I don't think the RTX 1000 is worth it because the other card is more flexible and very compatible. I left it in just in case it really matters to you, though.</p>
                 </div>
                 <div class="guide-item">
-                    <h3>Memory (RAM)</h3>
-                    <p>Standardized to 32GB baseline thresholds. Models utilizing soldered form factors are locked out of post-purchase upgrades and require 32GB immediately. Removable, slotted SoDIMM architectures permit buying 16GB tiers safely today with an open path for cheap DIY upgrades down the road.</p>
+                    <h3>3. Short-Term Memory: RAM</h3>
+                    <p>RAM lets you run multiple massive programs at once. 16GB is the college baseline, but <strong>32GB</strong> is the sweet spot so the laptop doesn't lag when you have 50 Chrome tabs, a textbook PDF, and a 3D design program open together. Some laptops permanently glue (solder) the RAM inside. If it's glued, we must buy 32GB upfront -- that way it's future-proof. If it's upgradeable, we can buy 16GB now and cheaply add more later. Though you'll see most options have 32gb.</p>
                 </div>
                 <div class="guide-item">
-                    <h3>Form Factor</h3>
-                    <p>Screen size and overall structural mass directly affect daily utility. A massive chassis provides maximum cooling limits but imposes continuous physical strain when hauling between lecture halls across a wide university footprint.</p>
+                    <h3>4. Portability: Weight & Size</h3>
+                    <p>A big laptop with a big screen is easier to read but is often heavier. A laptop that weighs over 5 pounds—plus a heavy charger brick—will make your shoulders ache. We aimed for laptops around 3 to 4.5 pounds to ensure it's easy to carry around all day. You have to decide how big / heavy you want to go.</p>
                 </div>
             </div>
         </section>
@@ -257,11 +305,14 @@
         <h2 class="catalog-title">The Curated Shortlist</h2>
         <section class="laptop-grid">
 
-            <!-- LAPTOP CARD 1: LENOVO LEGION 5A (UPGRADED) -->
+            <!-- LAPTOP CARD 1: LENOVO LEGION 5A (YURI'S 2ND BEST) -->
             <div class="laptop-card">
+                <!-- ADJUST VISUAL LABEL / BADGE HERE -->
+                <div class="badge second-pick">Yuri's 2nd Best!</div>
+                
                 <div class="laptop-image-container">
-                    <!-- Replace the src URL below with your actual image path when ready -->
-                    <img src="https://images.lenovo.com/us/en/lenovo-legion-placeholder.png" alt="Lenovo Legion 5a">
+                    <!-- Update the src path below to your folder path if saving images locally (e.g., src="images/legion.jpg") -->
+                    <img src="images/legion.jpg" alt="Lenovo Legion 5a">
                 </div>
                 <div class="laptop-content">
                     <div class="laptop-header">
@@ -269,94 +320,47 @@
                             <span class="laptop-brand">Lenovo</span>
                             <h3>Legion 5a</h3>
                         </div>
-                        <!-- ADJUST PRICE HERE -->
                         <div class="laptop-price">$1,749.99</div>
                     </div>
                     
-                    <!-- ADJUST TECH SPECS HERE -->
                     <div class="specs-list">
                         <div class="spec-item"><span>CPU:</span> Ryzen™ AI 7 450</div>
-                        <div class="spec-item"><span>RAM:</span> 32GB (Upgradeable SoDIMM)</div>
+                        <div class="spec-item"><span>RAM:</span> 32GB (Upgradeable)</div>
                         <div class="spec-item"><span>GPU:</span> RTX 5060 (8GB VRAM)</div>
                         <div class="spec-item"><span>Storage:</span> 1TB SSD</div>
                         <div class="spec-item"><span>Screen:</span> 15.3" Display</div>
                         <div class="spec-item"><span>Weight:</span> 4.10 lbs</div>
                     </div>
 
-                    <!-- ADJUST YOUR PROS & CONS HERE -->
                     <div class="evaluation-block">
                         <div class="eval-section">
-                            <div class="eval-title pro">Pros</div>
+                            <div class="eval-title pro">Why you'd choose it</div>
                             <ul class="eval-list">
-                                <li>Highly efficient AMD platform yielding superior battery behavior in basic workflows.</li>
-                                <li>Memory modules are un-soldered and fully modular for modular servicing.</li>
-                                <li>Excellent physical structural balance and cooling track record.</li>
+                                <li>It strikes the perfect middle ground. The AMD chip means the battery will actually last when you are just taking notes in class.</li>
+                                <li>The RAM isn’t glued down, making it highly serviceable and easy to fix or change down the road.</li>
+                                <li>Light enough to carry around campus all day without breaking your back.</li>
                             </ul>
                         </div>
                         <div class="eval-section">
-                            <div class="eval-title con">Cons</div>
+                            <div class="eval-title con">The Catch</div>
                             <ul class="eval-list">
-                                <li>Mid-range structural design tier compared to luxury unibody constructions.</li>
+                                <li>It looks like a standard laptop—it doesn't have a luxury, all-aluminum premium feel.</li>
                             </ul>
                         </div>
                     </div>
+                    <!-- TARGET PAGE LINK HERE -->
+                    <a href="https://www.lenovo.com/us/en/configurator/cto/?bundleId=83Q6CTO1WWUS2" target="_blank" class="buy-btn">View on Official Website</a>
                 </div>
             </div>
 
 
-            <!-- LAPTOP CARD 2: ASUS TUF GAMING F16 -->
+            <!-- LAPTOP CARD 2: ASUS ROG ZEPHYRUS G14 (YURI'S TOP PICK!) -->
             <div class="laptop-card">
+                <!-- ADJUST VISUAL LABEL / BADGE HERE -->
+                <div class="badge top-pick">Yuri's Top Pick!</div>
+                
                 <div class="laptop-image-container">
-                    <!-- Replace the src URL below with your actual image path when ready -->
-                    <img src="https://shop.asus.com/us/tuf-placeholder.png" alt="Asus TUF Gaming F16">
-                </div>
-                <div class="laptop-content">
-                    <div class="laptop-header">
-                        <div class="laptop-title-block">
-                            <span class="laptop-brand">Asus</span>
-                            <h3>TUF Gaming F16 (2025)</h3>
-                        </div>
-                        <!-- ADJUST PRICE HERE -->
-                        <div class="laptop-price">$1,399.99</div>
-                    </div>
-                    
-                    <!-- ADJUST TECH SPECS HERE -->
-                    <div class="specs-list">
-                        <div class="spec-item"><span>CPU:</span> Core™ Ultra 9 275HX</div>
-                        <div class="spec-item"><span>RAM:</span> 16GB (Upgradeable SoDIMM)</div>
-                        <div class="spec-item"><span>GPU:</span> RTX 5060 (8GB VRAM)</div>
-                        <div class="spec-item"><span>Storage:</span> 1TB SSD</div>
-                        <div class="spec-item"><span>Screen:</span> 16.0" Display</div>
-                        <div class="spec-item"><span>Weight:</span> 4.85 lbs</div>
-                    </div>
-
-                    <!-- ADJUST YOUR PROS & CONS HERE -->
-                    <div class="evaluation-block">
-                        <div class="eval-section">
-                            <div class="eval-title pro">Pros</div>
-                            <ul class="eval-list">
-                                <li>The highest raw value point relative to component specifications.</li>
-                                <li>Top-tier processing capabilities via high-wattage Ultra 9 chip.</li>
-                                <li>Storage is expansive right out of the box.</li>
-                            </ul>
-                        </div>
-                        <div class="eval-section">
-                            <div class="eval-title con">Cons</div>
-                            <ul class="eval-list">
-                                <li>Noticeably heavier total chassis mass (4.85 lbs).</li>
-                                <li>Ships with 16GB RAM; manual component upgrade will be required later.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- LAPTOP CARD 3: ASUS ROG ZEPHYRUS G14 -->
-            <div class="laptop-card">
-                <div class="laptop-image-container">
-                    <!-- Replace the src URL below with your actual image path when ready -->
-                    <img src="https://shop.asus.com/us/zephyrus-placeholder.png" alt="Asus ROG Zephyrus G14">
+                    <img src="images/zephyrus.jpg" alt="Asus ROG Zephyrus G14">
                 </div>
                 <div class="laptop-content">
                     <div class="laptop-header">
@@ -364,38 +368,83 @@
                             <span class="laptop-brand">Asus</span>
                             <h3>ROG Zephyrus G14</h3>
                         </div>
-                        <!-- ADJUST PRICE HERE -->
                         <div class="laptop-price">$2,199.99</div>
                     </div>
                     
-                    <!-- ADJUST TECH SPECS HERE -->
                     <div class="specs-list">
                         <div class="spec-item"><span>CPU:</span> Ryzen™ 9 270</div>
-                        <div class="spec-item"><span>RAM:</span> 32GB (Soldered Onboard)</div>
+                        <div class="spec-item"><span>RAM:</span> 32GB (Soldered)</div>
                         <div class="spec-item"><span>GPU:</span> RTX 5070 (8GB VRAM)</div>
                         <div class="spec-item"><span>Storage:</span> 1TB SSD</div>
                         <div class="spec-item"><span>Screen:</span> 14.0" Display</div>
                         <div class="spec-item"><span>Weight:</span> 3.31 lbs</div>
                     </div>
 
-                    <!-- ADJUST YOUR PROS & CONS HERE -->
                     <div class="evaluation-block">
                         <div class="eval-section">
-                            <div class="eval-title pro">Pros</div>
+                            <div class="eval-title pro">Why you'd choose it</div>
                             <ul class="eval-list">
-                                <li>Industry-leading mobility factor at only 3.31 lbs.</li>
-                                <li>Equipped with an advanced RTX 5070 graphics module.</li>
-                                <li>Ships with 32GB configured directly, completely neutralizing the soldering lock-in.</li>
+                                <li><strong>Highly Reviewed & Recommended:</strong> Exceptionally well-reviewed and widely recommended across tech outlets as a premier performance laptop.</li>
+                                <li>It feels like a premium MacBook but runs Windows. At 3.31 pounds, it is incredibly light and simple to travel with.</li>
+                                <li>Features a much stronger graphics card (RTX 5070) and comes with 32GB of RAM out of the box, avoiding the soldering limitation entirely.</li>
                             </ul>
                         </div>
                         <div class="eval-section">
-                            <div class="eval-title con">Cons</div>
+                            <div class="eval-title con">The Catch</div>
                             <ul class="eval-list">
-                                <li>Internal system memory is permanently fixed and cannot be modified or replaced.</li>
-                                <li>The 14" display surface reduces visual workspace for large model layouts.</li>
+                                <li>The RAM is permanently glued inside forever and can never be upgraded.</li>
+
                             </ul>
                         </div>
                     </div>
+                    <!-- TARGET PAGE LINK HERE -->
+                    <a href="https://shop.asus.com/us/90nr0lv1-m00080-rog-zephyrus-g14-2025.html?config=90NR0LV1-M00080" target="_blank" class="buy-btn">View on Official Website</a>
+                </div>
+            </div>
+
+
+            <!-- LAPTOP CARD 3: ASUS TUF GAMING F16 -->
+            <div class="laptop-card">
+                <div class="laptop-image-container">
+                    <img src="images/tuf.jpg" alt="Asus TUF Gaming F16">
+                </div>
+                <div class="laptop-content">
+                    <div class="laptop-header">
+                        <div class="laptop-title-block">
+                            <span class="laptop-brand">Asus</span>
+                            <h3>TUF Gaming F16 (2025)</h3>
+                        </div>
+                        <div class="laptop-price">$1,399.99</div>
+                    </div>
+                    
+                    <div class="specs-list">
+                        <div class="spec-item"><span>CPU:</span> Core™ Ultra 9 275HX</div>
+                        <div class="spec-item"><span>RAM:</span> 16GB (Upgradeable)</div>
+                        <div class="spec-item"><span>GPU:</span> RTX 5060 (8GB VRAM)</div>
+                        <div class="spec-item"><span>Storage:</span> 1TB SSD</div>
+                        <div class="spec-item"><span>Screen:</span> 16.0" Display</div>
+                        <div class="spec-item"><span>Weight:</span> 4.85 lbs</div>
+                    </div>
+
+                    <div class="evaluation-block">
+                        <div class="eval-section">
+                            <div class="eval-title pro">Why you'd choose it</div>
+                            <ul class="eval-list">
+                                <li>This gives you the absolute most power for the lowest price tag on the list.</li>
+                                <li>It has a massive screen space and an ultra-fast tier-9 class processor that crunches coding and math calculations effortlessly.</li>
+
+                            </ul>
+                        </div>
+                        <div class="eval-section">
+                            <div class="eval-title con">The Catch</div>
+                            <ul class="eval-list">
+                                <li>It is noticeably heavier (nearly 5 pounds) to haul around.</li>
+                                <li>Ships with only 16GB of RAM, meaning you will likely want to upgrade in the future.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- TARGET PAGE LINK HERE -->
+                    <a href="https://shop.asus.com/us/30939-us-cnf-auto.html?config=90NR0KJ1-M00020" target="_blank" class="buy-btn">View on Official Website</a>
                 </div>
             </div>
 
@@ -403,8 +452,7 @@
             <!-- LAPTOP CARD 4: DELL PRO MAX 16 -->
             <div class="laptop-card">
                 <div class="laptop-image-container">
-                    <!-- Replace the src URL below with your actual image path when ready -->
-                    <img src="https://shop.12thmantechnology.com/dell-placeholder.png" alt="Dell Pro Max 16">
+                    <img src="images/dell.jpg" alt="Dell Pro Max 16">
                 </div>
                 <div class="laptop-content">
                     <div class="laptop-header">
@@ -412,11 +460,9 @@
                             <span class="laptop-brand">Dell</span>
                             <h3>Pro Max 16</h3>
                         </div>
-                        <!-- ADJUST PRICE HERE -->
                         <div class="laptop-price">$2,469.99</div>
                     </div>
                     
-                    <!-- ADJUST TECH SPECS HERE -->
                     <div class="specs-list">
                         <div class="spec-item"><span>CPU:</span> Core™ Ultra 7 255H</div>
                         <div class="spec-item"><span>RAM:</span> 16GB</div>
@@ -426,23 +472,24 @@
                         <div class="spec-item"><span>Weight:</span> 4.65 lbs</div>
                     </div>
 
-                    <!-- ADJUST YOUR PROS & CONS HERE -->
                     <div class="evaluation-block">
                         <div class="eval-section">
-                            <div class="eval-title pro">Pros</div>
+                            <div class="eval-title pro">Why you'd choose it</div>
                             <ul class="eval-list">
-                                <li>Officially certified enterprise-level hardware execution ecosystem.</li>
-                                <li>Highly durable chassis targeted at direct commercial reliability expectations.</li>
+                                <li>This is a corporate-grade machine purchased through the university's vendor. </li>
+                                <li>Uses an officially certified professional RTX 1000 graphics architecture, which guarantees zero structural visual glitches within major CAD platforms.</li>
                             </ul>
                         </div>
                         <div class="eval-section">
-                            <div class="eval-title con">Cons</div>
+                            <div class="eval-title con">The Catch</div>
                             <ul class="eval-list">
-                                <li>Significantly higher capital cost relative to the actual internal component tiers.</li>
-                                <li>Restricted out of the box to 16GB memory arrays and smaller 512GB storage ceilings.</li>
+                                <li>It is very expensive for what is inside. You pay nearly a $1,000 premium purely for the workstation classification.</li>
+                                <li>You get half the memory (16GB) and half the hard drive storage (512GB) compared to the other cheaper options.</li>
                             </ul>
                         </div>
                     </div>
+                    <!-- TARGET PAGE LINK HERE -->
+                    <a href="https://shop.12thmantechnology.com/dell-pro-max-16-ultra-i7-16gb-512gb-rtx-1000-win11.html" target="_blank" class="buy-btn">View on Official Website</a>
                 </div>
             </div>
 
